@@ -52,10 +52,12 @@ class Shape {
           if ($i == 2) {
             //Get Name of Shape
             $selectedShape = $shapeNames[$i-1];
-            //Get Length of Shape
+            //Get Width of Shape
             $shapeWidth = $this->getWidth($selectedShape);
+            // Get Length of Shape
+            $shapeLength = $shapeWidth;
             $shapePerimeter = $this->getPerimeter($selectedShape);
-            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth, $shapeHeight = NULL, $shapeDiameter = NULL);
+            $this->buildShape($selectedShape, $shapeLength, $shapeWidth, $shapeHeight = NULL, $shapeDiameter = NULL);
 
           }
           // If Circle
@@ -124,11 +126,6 @@ class Shape {
     return $shapeLength;
   }
 
-  public function getRadius($selectedShape) {
-    $radius = $selectedShape->diameter/2;
-    return number_format($radius);
-  }
-
   public function getWidth($selectedShape) {
     echo "How Wide is your " . $selectedShape . "\n(ft.)";
     $width = fopen("php://stdin", "r");
@@ -146,7 +143,7 @@ class Shape {
     }
     // If Circle
     if ($selectedShape->diameter != NULL) {
-      $area = 3.14 * ($this->diameter/2)^2;
+      $area = 3.1415 * (($this->diameter/2) * ($this->diameter/2));
       return number_format($area);
     }
     if ($selectedShape->height != NULL) {
@@ -173,7 +170,7 @@ class Shape {
     }
     // If Circle
     if ($this->diameter != NULL) {
-      $perimeter = 3.142 * $this->diameter;
+      $perimeter = 3.1415 * $this->diameter;
       return number_format($perimeter);
     }
     // If
@@ -194,25 +191,24 @@ class Shape {
   }
 
   public function displayShape($shape) {
+    echo "+++++++++++++++++++++++++++++\n";
     echo "Shape: " . $this->name . "\n";
           if (isset($this->length)) {
             echo "Length: " . $this->length . "ft.\n";
           }
-          if ($this->width) {
+          if (isset($this->width)) {
             echo "Width: " . $this->width . "ft.\n";
           }
           if (isset($this->height)) {
             echo "Height: " . $this->height . "ft.\n";
           }
-          if (isset($this->radius)) {
-            echo "Radius: " . $this->radius . "ft.\n";
-          }
           if (isset($this->diameter)) {
+            echo "Radius: " . $this->diameter/2 . "ft.\n";
             echo "Diameter: " . $this->diameter . "ft.\n";
           }
           echo "Area: " . $this->getArea($shape) . "sq ft.\n";
           echo "Perimeter: " . $this->getPerimeter($shape) . "sq ft.\n";
-
+    echo "+++++++++++++++++++++++++++++\n";
   }
 };
 

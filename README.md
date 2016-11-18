@@ -1,7 +1,13 @@
 Shapes
 ======
 
-Using Symfony to create dynamic shapes that can be measured in scale.
+To run program type:
+              php run.php
+
+Sample shapes.xml IS REQUIRED.
+
+
+Using custom library to create dynamic shapes that can be measured in scale.
 
 - Defines 2 points for geometric locations.
 - Shapes featured:
@@ -16,3 +22,6 @@ Using Symfony to create dynamic shapes that can be measured in scale.
   * area
   * perimeter
   * proportionally reize the shape up or down.
+
+
+--: NEXT STEPS, integrate into MySQL DB.

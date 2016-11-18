@@ -7,14 +7,16 @@ class Shape {
   public $length;
   public $width;
   public $height;
-  public $diameter;
+  public $radius;
+  public $base;
 
-  public function __construct($name, $length, $width, $height, $diameter = NULL) {
+  public function __construct($name, $length, $width, $height, $radius = NULL, $base = NULL) {
     $this->name = $name;
     $this->length = $length;
     $this->width = $width;
     $this->height = $height;
-    $this->diameter = $diameter;
+    $this->radius = $radius;
+    $this->base = $base;
 
   }
 
@@ -32,7 +34,7 @@ class Shape {
     $line = fgets($selectedShape) or die("That is not a valid option. \n");
     $shape = trim($line);
 
-    for ($i=0;$i<count($shapeNames);$i++) {
+    for ($i=0;$i<count($shapeNames)+1;$i++) {
       switch ($shape) {
         case $i:
           echo "Building a " . $shapeNames[$i-1] . ".\n";
@@ -46,7 +48,7 @@ class Shape {
             //Get Width of Shape
             $shapeWidth = $this->getWidth($selectedShape);
 
-            $this->buildShape($selectedShape, $shapeLength, $shapeWidth, $shapeHeight = NULL, $shapeDiameter = NULL);
+            $this->buildShape($selectedShape, $shapeLength, $shapeWidth, $shapeHeight = NULL, $shapeRadius = NULL, $shapeBase = NULL);
           }
           // If Square
           if ($i == 2) {
@@ -57,7 +59,7 @@ class Shape {
             // Get Length of Shape
             $shapeLength = $shapeWidth;
             $shapePerimeter = $this->getPerimeter($selectedShape);
-            $this->buildShape($selectedShape, $shapeLength, $shapeWidth, $shapeHeight = NULL, $shapeDiameter = NULL);
+            $this->buildShape($selectedShape, $shapeLength, $shapeWidth, $shapeHeight = NULL, $shapeRadius = NULL, $shapeBase = NULL);
 
           }
           // If Circle
@@ -65,12 +67,12 @@ class Shape {
             //Get Name of Shape
             $selectedShape = $shapeNames[$i-1];
             //Get Diameter of Shape
-            $shapeDiameter = $this->getDiameter($selectedShape);
+            $shapeRadius = $this->getRadius($selectedShape);
 
-            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth = NULL, $shapeHeight = NULL, $shapeDiameter);
+            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth = NULL, $shapeHeight = NULL, $shapeRadius, $shapeBase = NULL);
           }
 
-          //If a Right Angle
+          //If a Right Triangle
           if ($i == 4) {
             //Get Name of Shape
             $selectedShape = $shapeNames[$i-1];
@@ -78,7 +80,7 @@ class Shape {
             $shapeHeight = $this->getHeight($selectedShape);
             // Get Width of Shape
             $shapeWidth = $this->getWidth($selectedShape);
-            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth, $shapeHeight, $shapeDiameter = NULL);
+            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth, $shapeHeight, $shapeRadius = NULL, $shapeBase = NULL);
           }
 
           //If an Equilateral Triangle
@@ -87,24 +89,49 @@ class Shape {
             $selectedShape = $shapeNames[$i-1];
             //Get Length of Shape
             $shapeLength = $this->getLength($selectedShape);
-            $this->buildShape($selectedShape, $shapeLength, $shapeWidth = NULL, $shapeHeight = NULL, $shapeDiameter = NULL);
+            $this->buildShape($selectedShape, $shapeLength, $shapeWidth = NULL, $shapeHeight = NULL, $shapeRadius = NULL, $shapeBase = NULL);
+          }
+
+          //If Parallelogram
+          if ($i == 6) {
+            //Get Name of Shape
+            $selectedShape = $shapeNames[$i-1];
+            //Get Base of Parallelogram
+            $shapeBase = $this->getBase($selectedShape);
+            //Get Height of Parallelogram
+            $shapeHeight = $this->getHeight($selectedShape);
+            $this->buildShape($selectedShape, $shapeLength = NULL, $shapeWidth = NULL, $shapeHeight, $shapeRadius = NULL, $shapeBase);
           }
       }
     }
   }
 
-  public function buildShape($name, $length, $width, $height, $diameter) {
-    $shape = new Shape($name, $length, $width, $height, $diameter);
+  public function buildShape($name, $length, $width, $height, $radius, $base) {
+    $shape = new Shape($name, $length, $width, $height, $radius, $base);
     $shape->displayShape($shape);
   }
 
+  public function getBase($selectedShape) {
+    echo "What is the base of your " . $selectedShape[0] . " in ft.?\n";
+    $base = fopen("php://stdin", "r");
+    $line = fgets($base) or die("Need an Integer");
+    $shapeBase = trim($line);
+    echo "The " . $selectedShape . " is " . $shapeBase . "ft. in diameter. \n";
+    return $shapeBase;
+  }
+
   public function getDiameter($selectedShape) {
-    echo "What is the diameter of your " . $selectedShape[0] . " in ft.?\n";
-    $diameter = fopen("php://stdin", "r");
-    $line = fgets($diameter) or die("Need an Integer");
-    $shapeDiameter = trim($line);
-    echo "The " . $selectedShape . " is " . $shapeDiameter . "ft. in diameter. \n";
-    return $shapeDiameter;
+    $diameter = $this->radius * 2;
+    return $diameter;
+  }
+
+  public function getRadius($selectedShape) {
+    echo "What is the radius of your " . $selectedShape[0] . " in ft.?\n";
+    $radius = fopen("php://stdin", "r");
+    $line = fgets($radius) or die("Need an Integer");
+    $shapeRadius = trim($line);
+    echo "The " . $selectedShape . " is " . $shapeRadius . "ft. in diameter. \n";
+    return $shapeRadius;
     $this->getRadius($selectedShape);
   }
 
@@ -142,12 +169,12 @@ class Shape {
       return number_format($area);
     }
     // If Circle
-    if ($selectedShape->diameter != NULL) {
-      $area = 3.1415 * (($this->diameter/2) * ($this->diameter/2));
+    if ($selectedShape->radius != NULL) {
+      $area = 3.1415 * (($this->getDiameter($selectedShape)/2) * ($this->getDiameter($selectedShape)/2));
       return number_format($area);
     }
     // If Right Triangle
-    if ($selectedShape->height != NULL) {
+    if ($selectedShape->height != NULL && $selectedShape->base == NULL) {
       $area = $this->height * $this->width/2;
       return number_format($area);
     }
@@ -161,6 +188,11 @@ class Shape {
       $area = $selectedShape->width * $selectedShape->width;
       return number_format($area);
     }
+    // If Parallelogram
+    if ($selectedShape->base != NULL) {
+      $area = $selectedShape->base * $selectedShape->height;
+      return number_format($area);
+    }
   }
 
   public function getPerimeter($shape) {
@@ -170,8 +202,8 @@ class Shape {
       return number_format($perimeter);
     }
     // If Circle
-    if ($this->diameter != NULL) {
-      $perimeter = 3.1415 * $this->diameter;
+    if ($this->radius != NULL) {
+      $perimeter = 3.1415 * $this->getDiameter($shape);
       return number_format($perimeter);
     }
     // If Right Triangle
@@ -202,6 +234,9 @@ class Shape {
           }
           if (isset($this->height)) {
             echo "Height: " . $this->height . "ft.\n";
+          }
+          if (isset($this->base)) {
+            echo "Base: " . $this->base . "ft.\n";
           }
           if (isset($this->diameter)) {
             echo "Radius: " . $this->diameter/2 . "ft.\n";

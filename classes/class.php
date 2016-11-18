@@ -146,16 +146,17 @@ class Shape {
       $area = 3.1415 * (($this->diameter/2) * ($this->diameter/2));
       return number_format($area);
     }
+    // If Right Triangle
     if ($selectedShape->height != NULL) {
-      $area = ($this->height * $this->width)/2;
+      $area = $this->height * $this->width/2;
       return number_format($area);
     }
-
+    // If Triangle
     if ($selectedShape->length != NULL) {
-      $area = ($selectedShape->length^2)*(sqrt(3)/4);
+      $area = ($selectedShape->length*$selectedShape->length)*(sqrt(3)/4);
       return number_format($area);
     }
-    // IF Square
+    // If Square
     if ($selectedShape->width != NULL) {
       $area = $selectedShape->width * $selectedShape->width;
       return number_format($area);
@@ -173,9 +174,9 @@ class Shape {
       $perimeter = 3.1415 * $this->diameter;
       return number_format($perimeter);
     }
-    // If
+    // If Right Triangle
     if ($this->height != NULL) {
-      $perimeter = (2*$shape->height) + (2*$shape->width);
+      $perimeter = $shape->height + $shape->width + (sqrt(($shape->height*$shape->height)+($shape->width*$shape->width)));
       return number_format($perimeter);
     }
     // If Triangle

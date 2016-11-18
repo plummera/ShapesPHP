@@ -4,8 +4,10 @@ Shapes
 To run program type:
               php run.php
 
-Sample shapes.xml IS REQUIRED.
-
++ Sample shapes.xml IS REQUIRED.
++ Need to modify classes/db.php for DB login credentials
+  - or -
+  remove db options from class.php
 
 Using custom library to create dynamic shapes that can be measured in scale.
 

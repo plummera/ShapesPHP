@@ -1,7 +1,7 @@
 <?php
   $servername = "127.0.0.1";
-  $username = "usernmae";
-  $password = "password";
+  $username = "root";
+  $password = "root";
   $db = "Shapes";
   // Connect to the database
   $conn = new mysqli($servername, $username, $password);
